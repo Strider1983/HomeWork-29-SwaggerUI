@@ -14,7 +14,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping //POST http://localhost:8080/students
+    @PostMapping //POST http://localhost:8080/students
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
@@ -22,5 +22,12 @@ public class StudentController {
     public Student findStudent(@PathVariable Long id) {
         return studentService.findStudent(id);
     }
-
+    @PutMapping //PUT http://localhost:8080/students
+    public Student editStudent(@RequestBody Student student) {
+        return studentService.editStudent(student);
+    }
+    @DeleteMapping("{id}") //DELETE http://localhost:8080/students/2
+    public Student delStudent(@PathVariable Long id) {
+        return studentService.delStudent(id);
+    }
 }
