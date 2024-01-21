@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("faculty")
 
@@ -25,6 +27,10 @@ public class FacultyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
+    }
+    @GetMapping("{color}")
+    public ResponseEntity<Collection<Faculty>> getFacultyByColor(@PathVariable String color) {
+        return ResponseEntity.ok(facultyService.getFacultyByColor(color));
     }
     @PutMapping
     public Faculty editFaculty(@RequestBody Faculty faculty) {
