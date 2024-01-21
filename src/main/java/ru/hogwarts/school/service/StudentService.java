@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
@@ -16,10 +17,15 @@ import java.util.stream.Stream;
 public class StudentService {
     private final Map<Long, Student> students = new HashMap<>();
     private long lastId = 0;
+    @PostConstruct
+    public void initStudents() {
+        createStudent(new Student("Ivan", 15));
+        createStudent(new Student("Dmitry", 18));
+    }
 
     public Student createStudent(Student student) {
         student.setId(++lastId);
-        students.put(lastId, student);
+        students.put(student.getId(), student);
         return student;
     }
     public Student findStudent(long id) {
@@ -39,7 +45,7 @@ public class StudentService {
     public Collection<Student> getStudetsByAge(int age) {
         return students.values()
                 .stream()
-                .filter(student -> age == student.getAge())
+                .filter(it -> age == it.getAge())
                 .collect(Collectors.toList());
     }
 }

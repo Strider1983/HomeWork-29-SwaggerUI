@@ -16,7 +16,7 @@ public class FacultyService {
 
     public Faculty createFaculty(Faculty faculty) {
         faculty.setId(++lastId);
-        faculties.put(lastId, faculty);
+        faculties.put(faculty.getId(), faculty);
         return faculty;
     }
     public Faculty findFaculty(long id) {
@@ -36,7 +36,7 @@ public class FacultyService {
     public Collection<Faculty> getFacultyByColor(String color) {
         return faculties.values()
                 .stream()
-                .filter(faculty -> color.equals(faculty.getColor()))
+                .filter(it -> it.getColor().equals(color))
                 .collect(Collectors.toList());
     }
 }
