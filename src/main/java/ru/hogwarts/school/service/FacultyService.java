@@ -19,8 +19,11 @@ public class FacultyService {
         return faculties.get(id);
     }
     public Faculty editFaculty(Faculty faculty) {
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+        if (faculties.containsKey(faculty.getId())) {
+            faculties.put(faculty.getId(), faculty);
+            return faculty;
+        }
+        return null;
     }
     public Faculty delFaculty(long id) {
         return faculties.remove(id);
