@@ -33,6 +33,10 @@ public class StudentController {
     public ResponseEntity<Collection<Student>> getStudetsByAge(@RequestParam int age) {
         return ResponseEntity.ok(studentService.getStudetsByAge(age));
     }
+    @GetMapping("all")
+    public ResponseEntity<Collection<Student>> getAllStudents() {
+        return ResponseEntity.ok(studentService.getAllStudents());
+    }
 
     @PutMapping //PUT http://localhost:8080/student
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
@@ -43,7 +47,13 @@ public class StudentController {
         return ResponseEntity.ok(editStudent);
     }
     @DeleteMapping("{id}") //DELETE http://localhost:8080/student/2
-    public Student delStudent(@PathVariable Long id) {
-        return studentService.delStudent(id);
+    public ResponseEntity delStudent(@PathVariable Long id) {
+        studentService.delStudent(id);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping //DELETE http://localhost:8080/student
+    public ResponseEntity delAllStudents() {
+        studentService.delAllStudents();
+        return ResponseEntity.ok().build();
     }
 }

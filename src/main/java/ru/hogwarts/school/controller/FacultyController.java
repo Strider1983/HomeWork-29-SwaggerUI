@@ -37,11 +37,8 @@ public class FacultyController {
         return facultyService.editFaculty(faculty);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<Faculty> delFaculty(@PathVariable Long id) {
-        Faculty editFaculty = facultyService.findFaculty(id);
-        if (editFaculty == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(editFaculty);
+    public ResponseEntity delFaculty(@PathVariable Long id) {
+        facultyService.delFaculty(id);
+        return ResponseEntity.ok().build();
     }
 }

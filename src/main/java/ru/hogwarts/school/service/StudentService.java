@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,37 +16,34 @@ import java.util.stream.Stream;
 @Service
 
 public class StudentService {
-    private final Map<Long, Student> students = new HashMap<>();
-    private long lastId = 0;
-    @PostConstruct
-    public void initStudents() {
-        createStudent(new Student("Ivan", 15));
-        createStudent(new Student("Dmitry", 18));
+
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
     public Student findStudent(long id) {
-        return students.get(id);
+        return studentRepository.findById(id).get();
     }
     public Student editStudent(Student student) {
-        if (students.containsKey(student.getId())) {
-            students.put(student.getId(), student);
-            return student;
-        }
-        return null;
+        return studentRepository.save(student);
     }
-    public Student delStudent(long id) {
-        return students.remove(id);
+    public void delStudent(long id) {
+        studentRepository.deleteById(id);
+    }
+    public void delAllStudents() {
+        studentRepository.deleteAll();
     }
 
     public Collection<Student> getStudetsByAge(int age) {
-        return students.values()
-                .stream()
-                .filter(it -> age == it.getAge())
-                .collect(Collectors.toList());
+        return studentRepository.findByAge(age);
+    }
+
+    public Collection<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 }
