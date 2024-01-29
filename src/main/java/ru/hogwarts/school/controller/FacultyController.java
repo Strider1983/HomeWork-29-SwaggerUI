@@ -29,8 +29,15 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getFacultyByColor(@RequestParam String color) {
-        return ResponseEntity.ok(facultyService.getFacultyByColor(color));
+    public ResponseEntity<Collection<Faculty>> findFaculty(@RequestParam (required = false)String color,
+                                                           @RequestParam(required = false)String name) {
+        if (color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.getFacultyByColor(color));
+        }
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(facultyService.getFacultyByName(name));
+        }
+        return ResponseEntity.ok(facultyService.getAllFaculties());
     }
     @PutMapping
     public Faculty editFaculty(@RequestBody Faculty faculty) {

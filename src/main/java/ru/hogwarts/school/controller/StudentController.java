@@ -29,13 +29,17 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
-    @GetMapping //GET http://localhost:8080/student?age=20
+    @GetMapping("age") //GET http://localhost:8080/student?age=20
     public ResponseEntity<Collection<Student>> getStudetsByAge(@RequestParam int age) {
         return ResponseEntity.ok(studentService.getStudetsByAge(age));
     }
     @GetMapping("all")
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
+    }
+    @GetMapping
+    public ResponseEntity<Collection<Student>> findByAgeBetween (@RequestParam int age1, @RequestParam int age2) {
+        return ResponseEntity.ok(studentService.findByAgeBetween(age1, age2));
     }
 
     @PutMapping //PUT http://localhost:8080/student

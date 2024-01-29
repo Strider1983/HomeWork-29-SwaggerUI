@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 public class StudentService {
 
+
     private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
@@ -46,4 +47,7 @@ public class StudentService {
     public Collection<Student> getAllStudents() {
         return studentRepository.findAll();
     }
+    public Collection<Student> findByAgeBetween(int age1, int age2) {
+        return studentRepository.findByAgeBetween(age1, age2);
+    };
 }
