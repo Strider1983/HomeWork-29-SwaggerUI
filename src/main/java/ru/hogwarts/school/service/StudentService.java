@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exeptions.StudentNotFoundExeption;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
@@ -28,7 +29,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
     public Student findStudent(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow(StudentNotFoundExeption::new);
     }
     public Student editStudent(Student student) {
         return studentRepository.save(student);
