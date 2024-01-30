@@ -29,7 +29,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
     public Student findStudent(long id) {
-        return studentRepository.findById(id).orElseThrow(StudentNotFoundExeption::new);
+        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundExeption("student with such ID not found"));
     }
     public Student editStudent(Student student) {
         return studentRepository.save(student);

@@ -26,7 +26,7 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).orElseThrow(FacultyNotFoundExeption::new);
+        return facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundExeption("faculty with such ID not found"));
     }
     public Faculty editFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
