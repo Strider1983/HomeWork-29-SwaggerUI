@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.controller.StudentController;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
 import ru.hogwarts.school.repositories.FacultyRepository;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class StudentControllerMvcTests {
+public class FacultyControllerMvcTests {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -46,59 +47,60 @@ public class StudentControllerMvcTests {
     private StudentController studentController;
 
     @Test
-    public void saveStudentTest() throws Exception {
-        final String name = "student";
-        final int age = 100;
+    public void saveFacultyTest() throws Exception {
+        final String name = "faculty";
+        final String color = "color";
         final long id = 1;
 
 
-        JSONObject studentObject = new JSONObject();
-        studentObject.put("name", name);
-        studentObject.put("age", age);
+        JSONObject facultyObject = new JSONObject();
+        facultyObject.put("name", name);
+        facultyObject.put("color", color);
 
-        Student student = new Student();
-        student.setId(id);
-        student.setName(name);
-        student.setAge(age);
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColor(color);
 
-        when(studentRepository.save(any(Student.class))).thenReturn(student);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/student")
-                .content(studentObject.toString())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.age").value(age));
-    }
-
-    @Test
-    public void findStudentByIdTest() throws Exception {
-        final String name = "student";
-        final int age = 100;
-        final long id = 1;
-
-
-        JSONObject studentObject = new JSONObject();
-        studentObject.put("name", name);
-        studentObject.put("age", age);
-
-        Student student = new Student();
-        student.setId(id);
-        student.setName(name);
-        student.setAge(age);
-
-        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
+        when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/1")
+                        .post("/faculty")
+                        .content(facultyObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.age").value(age));
+                .andExpect(jsonPath("$.color").value(color));
     }
+
+    @Test
+    public void findFacultyByIdTest() throws Exception {
+        final String name = "faculty";
+        final String color = "color";
+        final long id = 1;
+
+
+        JSONObject facultyObject = new JSONObject();
+        facultyObject.put("name", name);
+        facultyObject.put("color", color);
+
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColor(color);
+
+        when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value(name))
+                .andExpect(jsonPath("$.color").value(color));
+    }
+
 
 }
