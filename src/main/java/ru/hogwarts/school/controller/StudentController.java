@@ -44,7 +44,7 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
-    @GetMapping("age") //GET http://localhost:8080/student?age=20
+    @GetMapping("age") //GET http://localhost:8080/student/age?age=20
     public ResponseEntity<Collection<Student>> getStudetsByAge(@RequestParam int age) {
         return ResponseEntity.ok(studentService.getStudetsByAge(age));
     }
@@ -52,7 +52,7 @@ public class StudentController {
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
-    @GetMapping
+    @GetMapping //GET http://localhost:8080/student?age1=16&age2=24
     public ResponseEntity<Collection<Student>> findByAgeBetween (@RequestParam int age1, @RequestParam int age2) {
         return ResponseEntity.ok(studentService.findByAgeBetween(age1, age2));
     }

@@ -20,4 +20,23 @@ public class StudentControllerTests {
     public void contextLoads() throws Exception {
         Assertions.assertThat(studentController).isNotNull();
     }
+    @Test
+    public void getAllStudentsTest() throws Exception {
+        Assertions
+                .assertThat(this.restTemplate.getForObject("http://localhost:" +  port  + "/student/all", String.class))
+                .isNotNull();
+    }
+    @Test
+    public void getAllStudentsByAgeTest() throws Exception {
+        Assertions
+                .assertThat(this.restTemplate.getForObject("http://localhost:" +  port  + "/student/age?age=", String.class))
+                .isNotNull();
+    }
+    @Test
+    public void getAllStudentsByAgeBetweenTest() throws Exception {
+        Assertions
+                .assertThat(this.restTemplate.getForObject("http://localhost:" +  port  + "/student?age1=16&age2=24", String.class))
+                .isNotNull();
+    }
+
 }
