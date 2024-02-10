@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import ru.hogwarts.school.controller.StudentController;
+import ru.hogwarts.school.model.Student;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControllerTests {
@@ -38,5 +39,16 @@ public class StudentControllerTests {
                 .assertThat(this.restTemplate.getForObject("http://localhost:" +  port  + "/student?age1=16&age2=24", String.class))
                 .isNotNull();
     }
+    @Test
+    public void testPostStudent() throws Exception {
+        Student student = new Student();
+        student.setName("TestStudent");
+        student.setAge(1000);
+
+        Assertions
+                .assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/student", student, String.class))
+                .isNotNull();
+    }
+
 
 }
