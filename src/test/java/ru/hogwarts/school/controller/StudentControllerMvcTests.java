@@ -113,7 +113,9 @@ public class StudentControllerMvcTests {
     @Test
     public void putStudentTest() throws Exception {
         Long studentId = 1L;
-        Student student = new Student("Ivan", 1000);
+        Student student = new Student();
+        student.setName("Ivan");
+        student.setAge(1000);
 
         when(studentService.editStudent(studentId, student)).thenReturn(student);
 
