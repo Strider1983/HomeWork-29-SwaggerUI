@@ -31,8 +31,12 @@ public class StudentService {
     public Student findStudent(long id) {
         return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundExeption("student with such ID not found"));
     }
-    public Student editStudent(Student student) {
-        return studentRepository.save(student);
+    public Student editStudent(Long id, Student student) {
+        return studentRepository.findById(id).map(studentFromDb -> {
+            studentFromDb.setName(student.getName());
+            studentFromDb.setAge(student.getAge());
+            return studentRepository.save(studentFromDb);
+        }).orElse(null);
     }
     public void delStudent(long id) {
         studentRepository.deleteById(id);

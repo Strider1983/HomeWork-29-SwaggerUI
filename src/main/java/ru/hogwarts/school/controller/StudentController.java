@@ -57,9 +57,9 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findByAgeBetween(age1, age2));
     }
 
-    @PutMapping //PUT http://localhost:8080/student
-    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student editStudent = studentService.editStudent(student);
+    @PutMapping("{id}") //PUT http://localhost:8080/student/1
+    public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
+        Student editStudent = studentService.editStudent(id, student);
         if (editStudent == null) {
             return ResponseEntity.notFound().build();
         }

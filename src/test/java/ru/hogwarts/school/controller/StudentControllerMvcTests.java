@@ -1,5 +1,6 @@
-package ru.hogwarts.school;
+package ru.hogwarts.school.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.model.Student;
@@ -21,15 +23,20 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(StudentController.class)
 public class StudentControllerMvcTests {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
     @MockBean
     private StudentRepository studentRepository;
     @MockBean
@@ -71,7 +78,8 @@ public class StudentControllerMvcTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.age").value(age));
+                .andExpect(jsonPath("$.age").value(age))
+                .andDo(print());
     }
 
     @Test
@@ -90,6 +98,7 @@ public class StudentControllerMvcTests {
         student.setName(name);
         student.setAge(age);
 
+
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -98,7 +107,23 @@ public class StudentControllerMvcTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.age").value(age));
+                .andExpect(jsonPath("$.age").value(age))
+                .andDo(print());
     }
+    @Test
+    public void putStudentTest() throws Exception {
+        Long studentId = 1L;
+        Student student = new Student("Ivan", 1000);
 
+        when(studentService.editStudent(studentId, student)).thenReturn(student);
+
+        ResultActions perform = mockMvc.perform(put("/student/{id}", studentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(student)));
+        perform
+                .andExpect(jsonPath("$.name").value(student.getName()))
+                .andExpect(jsonPath("$.age").value(student.getAge()))
+                .andDo(print());
+
+    }
 }
