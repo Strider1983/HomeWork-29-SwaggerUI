@@ -127,7 +127,7 @@ public class FacultyControllerMvcTests {
 
     }
     @Test
-    public void deleteStudentTest() throws Exception {
+    public void deleteFacultyTest() throws Exception {
         Long facultyId = 1L;
         when(facultyRepository.existsById(facultyId)).thenReturn(true);
         doNothing().when(facultyRepository).deleteById(facultyId);
@@ -137,6 +137,5 @@ public class FacultyControllerMvcTests {
                 .andExpect(status().isOk());
 
     }
-
 
 }
