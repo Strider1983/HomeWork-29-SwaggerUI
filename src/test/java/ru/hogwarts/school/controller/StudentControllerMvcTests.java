@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +26,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -126,6 +129,17 @@ public class StudentControllerMvcTests {
                 .andExpect(jsonPath("$.name").value(student.getName()))
                 .andExpect(jsonPath("$.age").value(student.getAge()))
                 .andDo(print());
+
+    }
+    @Test
+    public void deleteStudentTest() throws Exception {
+        Long studentId = 1L;
+        when(studentRepository.existsById(studentId)).thenReturn(true);
+        doNothing().when(studentRepository).deleteById(studentId);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/student/" + studentId)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
     }
 }

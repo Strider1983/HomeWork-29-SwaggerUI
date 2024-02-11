@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.controller.FacultyController;
 import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class FacultyControllerTests {
@@ -36,14 +41,20 @@ public class FacultyControllerTests {
                 .isNotNull();
     }
     @Test
-    public void testPostFacultyt() throws Exception {
+    public void testPostFacultyTest() throws Exception {
         Faculty faculty = new Faculty();
-        faculty.setName("TestFaculty");
-        faculty.setColor("testColor");
+        faculty.setName("Puffendor");
+        faculty.setColor("Purple");
 
-        Assertions
-                .assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/faculty", faculty, String.class))
-                .isNotNull();
+        ResponseEntity<Faculty> facultyResponseEntity = restTemplate.postForEntity("http://localhost:" +  port  + "/faculty", faculty, Faculty.class);
+
+        assertNotNull(facultyResponseEntity);
+        assertEquals(facultyResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Faculty actualFaculty = facultyResponseEntity.getBody();
+        assertNotNull(actualFaculty.getId());
+        assertEquals(actualFaculty.getName(), faculty.getName());
+        assertEquals(actualFaculty.getColor(), faculty.getColor());
     }
 
 }

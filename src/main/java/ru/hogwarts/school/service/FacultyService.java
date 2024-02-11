@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeptions.FacultyNotFoundExeption;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.HashMap;
@@ -28,8 +29,12 @@ public class FacultyService {
     public Faculty findFaculty(long id) {
         return facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundExeption("faculty with such ID not found"));
     }
-    public Faculty editFaculty(Faculty faculty) {
-        return facultyRepository.save(faculty);
+    public Faculty editFaculty(Long id, Faculty faculty) {
+        return facultyRepository.findById(id).map(studentFromDb -> {
+            studentFromDb.setName(faculty.getName());
+            studentFromDb.setColor(faculty.getColor());
+            return facultyRepository.save(studentFromDb);
+        }).orElse(null);
     }
     public void delFaculty(long id) {
         facultyRepository.deleteById(id);
