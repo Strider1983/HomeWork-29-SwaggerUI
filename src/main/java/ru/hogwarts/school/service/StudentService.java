@@ -54,5 +54,8 @@ public class StudentService {
     }
     public Collection<Student> findByAgeBetween(int age1, int age2) {
         return studentRepository.findByAgeBetween(age1, age2);
-    };
+    }
+    public Integer countStudents () {
+        return studentRepository.countStudents();
+    }
 }

@@ -75,4 +75,8 @@ public class StudentController {
         studentService.delAllStudents();
         return ResponseEntity.ok().build();
     }
+    @GetMapping("count") //GET http://localhost:8080/student/count
+    public Integer countStudents() {
+        return studentService.countStudents();
+    }
 }
