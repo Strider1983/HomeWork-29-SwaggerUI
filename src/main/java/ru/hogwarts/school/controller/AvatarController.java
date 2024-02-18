@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.dto.AvatarDTO;
+import ru.hogwarts.school.mapper.AvatarMapper;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.service.AvatarService;
 
@@ -14,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -21,9 +25,14 @@ import java.nio.file.Path;
 public class AvatarController {
     private final AvatarService avatarService;
 
-    public AvatarController(AvatarService avatarService) {
+    public AvatarController(AvatarService avatarService, AvatarMapper avatarMapper) {
         this.avatarService = avatarService;
+        this.avatarMapper = avatarMapper;
     }
+    private final AvatarMapper avatarMapper;
+
+
+
 
     @GetMapping(value = "/{id}/avatar-from-db")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
@@ -44,6 +53,17 @@ public class AvatarController {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+    @GetMapping(value = "/avatars")
+    public List<AvatarDTO> getPagedAvatars(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize
+    ) {
+        return avatarService.getPagedAvatars(pageNumber, pageSize)
+                .stream()
+                .map(avatarMapper::mapToDTO)
+                .collect(Collectors.toList());
+
     }
 
 }
