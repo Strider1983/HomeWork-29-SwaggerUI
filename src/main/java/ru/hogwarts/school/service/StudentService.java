@@ -58,4 +58,10 @@ public class StudentService {
     public Integer countStudents () {
         return studentRepository.countStudents();
     }
+    public Integer averageAge () {
+        return studentRepository.averageAge();
+    }
+    public Collection<Student> lastStudents() {
+        return studentRepository.lastStudents();
+    }
 }

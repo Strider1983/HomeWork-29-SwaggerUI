@@ -79,4 +79,12 @@ public class StudentController {
     public Integer countStudents() {
         return studentService.countStudents();
     }
+    @GetMapping("average-age") //GET http://localhost:8080/student/average-age
+    public Integer averageAge() {
+        return studentService.averageAge();
+    }
+    @GetMapping("last-students") //GET http://localhost:8080/student/last-students
+    public ResponseEntity<Collection<Student>> lastStudents() {
+        return ResponseEntity.ok(studentService.lastStudents());
+    }
 }
