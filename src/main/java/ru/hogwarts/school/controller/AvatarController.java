@@ -54,7 +54,7 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
-    @GetMapping(value = "/avatars")
+    @GetMapping
     public List<AvatarDTO> getPagedAvatars(
             @RequestParam int pageNumber,
             @RequestParam int pageSize
