@@ -35,9 +35,10 @@ public class StudentService {
     }
     public Student findStudent(long id) {
         logger.debug("requesting student by id: {}", id);
-        logger.error("There is no student with id:{}", id);
-        Student student = studentRepository.findById(id).orElseThrow(() ->
-                new StudentNotFoundExeption("student with such ID not found"));
+        Student student = studentRepository.findById(id).orElseThrow(() -> {
+                logger.error("student with id {} not found", id);
+                return new StudentNotFoundExeption("student with such ID not found");
+        });
         logger.debug("student by {} is {}", id, student);
         return student;
     }

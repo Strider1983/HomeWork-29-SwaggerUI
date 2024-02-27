@@ -32,7 +32,10 @@ public class FacultyService {
     }
     public Faculty findFaculty(long id) {
         logger.info("Was invoked method for get faculty by id");
-        return facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundExeption("faculty with such ID not found"));
+        return facultyRepository.findById(id).orElseThrow(() -> {
+            logger.error("faculty with id {} not found", id);
+            return new FacultyNotFoundExeption("faculty with such ID not found");
+        });
     }
     public Faculty editFaculty(Long id, Faculty faculty) {
         logger.info("Was invoked method for edit faculty");
