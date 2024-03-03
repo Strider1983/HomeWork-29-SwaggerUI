@@ -122,8 +122,31 @@ public class StudentService {
 
     }
 
-    public void printSynchronized() {
+    public Object flag = new Object();
 
+    public void printSynchronized() {
+        List<String> names = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        printSynchronizedName(names.get(0));
+        printSynchronizedName(names.get(1));
+
+        new Thread(() -> {
+            printSynchronizedName(names.get(2));
+            printSynchronizedName(names.get(3));
+
+        }).start();
+
+        new Thread(() -> {
+            printSynchronizedName(names.get(4));
+            printSynchronizedName(names.get(5));
+
+        }).start();
+    }
+    private synchronized void printSynchronizedName (String name) {
+        System.out.println(Thread.currentThread().getName() + ": " + name);
     }
 
 }
