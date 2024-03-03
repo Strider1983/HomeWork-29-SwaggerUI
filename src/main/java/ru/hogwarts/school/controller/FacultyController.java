@@ -44,6 +44,12 @@ public class FacultyController {
     public ResponseEntity<Collection<Faculty>> getAllFaculties() {
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }
+
+    @GetMapping("longestFacultyName")
+    public String getLongestFacultyName () {
+        return facultyService.getLongestFacultyName();
+    }
+
     @PutMapping("{id}")
     public Faculty editFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
         return facultyService.editFaculty(id, faculty);

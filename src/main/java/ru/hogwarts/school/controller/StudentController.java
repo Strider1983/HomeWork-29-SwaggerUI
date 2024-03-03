@@ -10,6 +10,7 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("student")
@@ -55,6 +56,17 @@ public class StudentController {
     @GetMapping //GET http://localhost:8080/student?age1=16&age2=24
     public ResponseEntity<Collection<Student>> findByAgeBetween (@RequestParam int age1, @RequestParam int age2) {
         return ResponseEntity.ok(studentService.findByAgeBetween(age1, age2));
+    }
+
+    @GetMapping("startsWithA")
+    public List<String> getNamesStartedWithA() {
+        return studentService.getNamesStartedWithA();
+
+    }
+    @GetMapping("getAverageAgeWithStreams")
+    public Double getAverageAge() {
+        return studentService.getAverageAge();
+
     }
 
     @PutMapping("{id}") //PUT http://localhost:8080/student/1

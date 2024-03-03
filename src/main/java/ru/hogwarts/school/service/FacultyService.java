@@ -9,11 +9,8 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Collection;
 
 @Service
 public class FacultyService {
@@ -36,6 +33,15 @@ public class FacultyService {
             logger.error("faculty with id {} not found", id);
             return new FacultyNotFoundExeption("faculty with such ID not found");
         });
+    }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll()
+                .stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .orElse("Нет данных");
+
     }
     public Faculty editFaculty(Long id, Faculty faculty) {
         logger.info("Was invoked method for edit faculty");

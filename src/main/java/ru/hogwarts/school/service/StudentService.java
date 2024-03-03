@@ -9,10 +9,7 @@ import ru.hogwarts.school.exeptions.StudentNotFoundExeption;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,6 +66,21 @@ public class StudentService {
         logger.info("Was invoked method for get all students");
         return studentRepository.findAll();
     }
+    public List<String> getNamesStartedWithA() {
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(it -> it.startsWith("А"))
+                .collect(Collectors.toList());
+    }
+    public Double getAverageAge() {
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average().orElse(0.0);
+
+    }
     public Collection<Student> findByAgeBetween(int age1, int age2) {
         logger.info("Was invoked method for get students by age between");
         return studentRepository.findByAgeBetween(age1, age2);
@@ -85,4 +97,5 @@ public class StudentService {
         logger.info("Was invoked method for get last five students");
         return studentRepository.lastStudents();
     }
+
 }
