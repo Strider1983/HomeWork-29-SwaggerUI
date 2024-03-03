@@ -99,4 +99,14 @@ public class StudentController {
     public ResponseEntity<Collection<Student>> lastStudents() {
         return ResponseEntity.ok(studentService.lastStudents());
     }
+
+    @GetMapping("print-parallel")
+    public void printParallel() {
+        studentService.printParallel();
+    }
+
+    @GetMapping("print-synchronized")
+    public void printSynchronized() {
+        studentService.printSynchronized();
+    }
 }
