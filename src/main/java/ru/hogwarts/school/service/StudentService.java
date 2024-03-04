@@ -72,6 +72,7 @@ public class StudentService {
                 .map(Student::getName)
                 .map(String::toUpperCase)
                 .filter(it -> it.startsWith("А"))
+                .sorted()
                 .collect(Collectors.toList());
     }
     public Double getAverageAge() {
